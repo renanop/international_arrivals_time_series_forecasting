@@ -1,0 +1,20 @@
+{
+  "continente": "continent",
+  "cod_continente": "continent_id",
+  "pais": "country",
+  "cod_pais": "country_id",
+  "uf": "state",
+  "cod_uf": "state_id",
+  "via": "entry_route",
+  "cod_via": "entry_route_id",
+  "ano": "year",
+  "mes": "month",
+  "cod_mes": "month_id",
+  "chegadas": "arrivals",
+  "ordem_continente": "continent_id",
+  "ordem_pais": "country_id",
+  "ordem_uf": "state_id",
+  "via_de_acesso": "entry_route",
+  "ordem_via_de_acesso": "entry_route_id",
+  "ordem_mes": "month_id"
+}

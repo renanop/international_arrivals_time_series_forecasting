@@ -1,0 +1,14 @@
+[
+  { "name": "continent", "dtype": "string" },
+  { "name": "continent_id", "dtype": "int64" },
+  { "name": "country", "dtype": "string" },
+  { "name": "country_id", "dtype": "int64" },
+  { "name": "state", "dtype": "string" },
+  { "name": "state_id", "dtype": "int64" },
+  { "name": "entry_route", "dtype": "string" },
+  { "name": "entry_route_id", "dtype": "int64" },
+  { "name": "year", "dtype": "int64" },
+  { "name": "month", "dtype": "int64" },
+  { "name": "month_id", "dtype": "int64" },
+  { "name": "arrivals", "dtype": "int64" }
+]
