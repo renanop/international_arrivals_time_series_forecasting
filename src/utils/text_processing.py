@@ -1,4 +1,5 @@
 import unicodedata
+import Levenshtein
 
 def normalize(s: str) -> str:
     """lower, sem acento, strip, espaços->underscore, remove chars estranhos."""
@@ -12,3 +13,14 @@ def normalize(s: str) -> str:
         s = s.replace("__", "_")
     return s.strip("_")
 
+def levenshtein_substitute(word, cats=["aereo", "maritimo","fluvial", "terrestre"]):
+    """Returns the most similar string in {cats} to {word} according to the levenshtein distance."""
+    distances={}
+    for cat in cats:
+        distances[cat] = Levenshtein.distance(word, cat)
+
+    min_distance = min(distances.values())
+
+    for k,v in distances.items():
+        if v == min_distance:
+            return k
