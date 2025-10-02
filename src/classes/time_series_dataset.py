@@ -2,7 +2,7 @@ import pandas as pd
 from dotenv import find_dotenv, load_dotenv
 from pathlib import Path
 import sys
-import os 
+import os
 import json
 from datetime import datetime as dt
 
@@ -20,7 +20,7 @@ sys.path.append(os.path.join(PROJECT_ROOT, "src"))
 from utils.paths import resolve_env_path
 from utils.text_processing import normalize, levenshtein_substitute
 
-# Adiciona caminhos importantes 
+# Adiciona caminhos importantes
 ARRIVALS_PATH = resolve_env_path("ARRIVALS_PATH")
 DATAFRAME_ENCODING = os.getenv("DATAFRAME_ENCODING")
 ARRIVALS_SCHEMA_PATH = resolve_env_path("ARRIVALS_SCHEMA_PATH")
@@ -42,7 +42,7 @@ class TimeSeriesDataset:
 
         # Runs pipelines
         self._pipeline()
-        
+
 
     def _read_csv_data_from_path(self):
         """Reads csv files from a Path object and consolidate it in a dataframe"""
@@ -71,12 +71,12 @@ class TimeSeriesDataset:
         df = pd.concat(dfs, ignore_index=True)
 
         return df
-    
+
 
     # Data wrangling
     def _standardize_string_columns(self):
         """Normalize the values for all string columns"""
-        # Selecting all string columns        
+        # Selecting all string columns
         str_columns = self.data.select_dtypes(include=["object", "string"]).columns.tolist()
 
         # Normalizing all string columns
@@ -87,11 +87,11 @@ class TimeSeriesDataset:
         """Creates the datetime column using the year and month columns"""
         self.data["date"] = pd.to_datetime(
             dict(
-                year=self.data["year"], 
-                month=self.data["month_id"], 
+                year=self.data["year"],
+                month=self.data["month_id"],
                 day=1)
                 )
-        
+
     def _clean_entry_route_column(self):
         """
         Substitutes values of the entry route column according to the levenshtein
@@ -99,19 +99,8 @@ class TimeSeriesDataset:
         """
         self.data["entry_route"] = self.data["entry_route"].apply(levenshtein_substitute)
 
-    def _remove_missing_continent_arrivals(self):
-        """
-        Removes continente_nao_especificado arrivals, which is equivalent to 
-        continent_id = 8.
-        """
-        self.data = self.data.loc[self.data["continent_id"] != 8]
-
     def _create_equivalence_tables(self, id_col, value_col):
         return self.data[[value_col, id_col]].drop_duplicates().reset_index(drop=True)
-    
-
-
-        
 
     # Pipeline function
     def _pipeline(self):
@@ -125,17 +114,18 @@ class TimeSeriesDataset:
         self.continent_table = self._create_equivalence_tables(id_col="continent_id", value_col="continent")
         self.state_table = self._create_equivalence_tables(id_col="state_id", value_col="state")
 
-        # Continue pipeline
-        self._remove_missing_continent_arrivals()
+    # General methods
+    def get_data_without_missing_values(self):
+        """
+        Removes continente_nao_especificado arrivals, which is equivalent to
+        continent_id = 8.
+        """
+        return self.data.loc[self.data["continent_id"] != 8]
+
+    # Continue pipeline
+    # self.remove_missing_continent_arrivals()
 
 
-
-
-dataset = TimeSeriesDataset(ARRIVALS_PATH)
-
-print(
-    dataset.state_table
-    )
 
 
 
