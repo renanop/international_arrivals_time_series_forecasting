@@ -6,21 +6,23 @@ class Plotter:
         pass
 
     def plot(self, data, plot_name, ax=None,figsize=(8,4),x_label=None, y_label=None, title=None, **args):
+        """Utility function that generalizes calls to plotting methods from the seaborn library."""
 
+        # Boolean variable for flow control
         created=False
-        # Get chart function
+
+        # Get chart function from plot name string
         chart = getattr(sns, plot_name)
 
+        # If ax is not provided, the function creates a matplotlib.pyplot.figure object.
         if ax is None:
             fig, ax = plt.subplots(figsize=figsize)
             created = True
-        # Generate fig and ax
-        # fig, ax = plt.subplots(figsize=figsize)
 
         # Plot data
         chart(data=data, ax=ax, **args)
 
-        # Miscellaneous
+        # Setting title and labels
         ax.set_title(title)
         ax.set_xlabel(x_label)
         ax.set_ylabel(y_label)
