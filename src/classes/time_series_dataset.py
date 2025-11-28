@@ -31,7 +31,7 @@ ARRIVALS_COLUMN_SYNONYMS_PATH = resolve_env_path("ARRIVALS_COLUMN_SYNONYMS_PATH"
 # value_col = "arrivals"
 
 class TimeSeriesDataset:
-    def __init__(self, data_path):
+    def __init__(self, data_path, covid_dummy=False):
         self.data_path = data_path
         self.data = self._read_csv_data_from_path()
 
@@ -42,6 +42,10 @@ class TimeSeriesDataset:
 
         # Runs pipelines
         self._pipeline()
+
+        # create covid dummy
+        if covid_dummy:
+            self._create_covid_dummy()
 
 
     def _read_csv_data_from_path(self):
@@ -101,6 +105,15 @@ class TimeSeriesDataset:
 
     def _create_equivalence_tables(self, id_col, value_col):
         return self.data[[value_col, id_col]].drop_duplicates().reset_index(drop=True)
+
+    def _create_covid_dummy(self):
+        # OMS covid pandemic dates
+        covid_start = pd.Timestamp('2020-03-01')
+        covid_end = pd.Timestamp('2023-05-01')
+
+        # Create COVID dummy variable for entire dataset
+        self.data['covid_dummy'] = ((self.data['date'] >= covid_start) &
+                                (self.data['date'] < covid_end)).astype(int)
 
     # Pipeline function
     def _pipeline(self):
