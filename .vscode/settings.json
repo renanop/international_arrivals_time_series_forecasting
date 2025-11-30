@@ -1,0 +1,11 @@
+{
+    "python.defaultInterpreterPath": "${workspaceFolder}/.st/Scripts/python.exe",
+    "jupyter.kernels.filter": [],
+    "jupyter.notebookFileRoot": "${workspaceFolder}",
+    "notebook.kernelProviderAssociations": [
+        {
+            "viewType": "jupyter-notebook",
+            "kernelProvider": "ms-toolsai.jupyter"
+        }
+    ]
+}
